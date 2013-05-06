@@ -61,10 +61,10 @@ var rd = 0.08;
 var scale = 100;
 
 var circ = {
-'restitution' : 1.0 , 
+'restitution' : 2.0 , 
 'linearDamping' : 1.0 , 
 'angularDamping' : 1.0 , 
-'density' : 1.2, 
+'density' : 2.2, 
 'x_force':0,
 'y_force':0,
 'fx':0,
@@ -97,3 +97,40 @@ $(function()
 	//Start the Game Loop!!!!!!!
 	game_loop();
 });
+
+
+
+function createWorld() 
+{
+	var gravity = new b2Vec2(0, -1);
+	var doSleep = true;
+	
+	world = new b2World(gravity , doSleep);
+	
+	//setup debug draw
+	var debugDraw = new b2DebugDraw();
+	debugDraw.SetSprite(document.getElementById("canvas").getContext("2d"));
+	debugDraw.SetDrawScale(scale);
+	debugDraw.SetFillAlpha(0.5);
+	debugDraw.SetLineThickness(1.0);
+	debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+	
+	world.SetDebugDraw(debugDraw);
+	
+createPox(world,729,50,1,650,{ 'userdata' : "bl" });	
+createPox(world,688,100,1,600,{ 'userdata' : "bl" });		
+
+createShape(world,410,0,[0,0,320,50,320,0,],{ 'userdata' : "upper_right_triangle" });		
+
+
+createShape(world,0,0,[0,0,0,50,410,0,],{ 'userdata' : "upper_right_triangle" });	
+createShape(world,0,0,[0,0,0,700,50,700,],{ 'userdata' : "side_left_triangle" });	
+	return world;
+}	
+
+
+
+
+
+
+

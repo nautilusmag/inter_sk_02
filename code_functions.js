@@ -8,34 +8,7 @@ function redraw_world(world, context)
 	ctx.restore();
 	}
 
-function createWorld() 
-{
-	var gravity = new b2Vec2(0, 0);
-	var doSleep = true;
 	
-	world = new b2World(gravity , doSleep);
-	
-	//setup debug draw
-	var debugDraw = new b2DebugDraw();
-	debugDraw.SetSprite(document.getElementById("canvas").getContext("2d"));
-	debugDraw.SetDrawScale(scale);
-	debugDraw.SetFillAlpha(0.5);
-	debugDraw.SetLineThickness(1.0);
-	debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
-	
-	world.SetDebugDraw(debugDraw);
-	
-//createPox(world,100,100,1,50);	
-
-createShape(world,365,365,[
--5,-5,
-5,10,
-14,18,
-21,4,
-
-]);	
-	return world;
-}		
 
 function createPox(world, x, y, width, height, options) 
 {
@@ -97,7 +70,7 @@ function createShape(world, x, y,cords,options)
 	nx=x/scale;
 	ny=y/scale;
 	ny = game.screen_height-ny;
-	s=4/scale;
+	s=1/scale;
 	  	
 tt = new Array;
 	for (var i=0; i<cords.length; i=i+2) {
@@ -106,6 +79,7 @@ tt = new Array;
 fix_def.shape.SetAsArray(tt);
 	body_def.position.Set(nx , ny);
 	body_def.linearDamping = options.linearDamping;
+	body_def.userData = options.userdata;
 	body_def.angularDamping = options.angularDamping;
 	var b = world.CreateBody( body_def );
 	var f = b.CreateFixture(fix_def);
@@ -133,6 +107,7 @@ function createBox(world, x, y, width, height, options)
 	fix_def.shape = new b2PolygonShape();
 	fix_def.shape.SetAsBox( width , height );
 	body_def.position.Set(x , y);
+	body_def.userData = options.userdata;
 	body_def.linearDamping = options.linearDamping;
 	body_def.angularDamping = options.angularDamping;
 	body_def.type = options.type;
