@@ -23,6 +23,11 @@ var game = {
 {
 var code = e.keyCode;
 
+
+
+//console.log(code);
+if (code == 65){}
+
 //left
 if(code == 37){chng = -1;}
 //right
@@ -55,8 +60,8 @@ var ctx;
 var canvas_height;
 var nw = 0;
 var chng = 0;
-var pwr=0.7;
-var rd = 0.08;
+var pwr=0.9;
+var rd = 0.12;
 //1 metre of box2d length becomes 100 pixels on canvas
 var scale = 100;
 
@@ -85,13 +90,13 @@ $(function()
 	$(document).keydown(function(e)
 	{
 		game.key_down(e);
-		return false;
+		//return false;
 	});
 	
 	$(document).keyup(function(e)
 	{
 		game.key_up(e);
-		return false;
+		//return false;
 	});
 	
 	//Start the Game Loop!!!!!!!
@@ -102,7 +107,7 @@ $(function()
 
 function createWorld() 
 {
-	var gravity = new b2Vec2(0, -1);
+	var gravity = new b2Vec2(0, -8.5);
 	var doSleep = true;
 	
 	world = new b2World(gravity , doSleep);
@@ -117,14 +122,74 @@ function createWorld()
 	
 	world.SetDebugDraw(debugDraw);
 	
-createPox(world,729,50,1,650,{ 'userdata' : "bl" });	
-createPox(world,688,100,1,600,{ 'userdata' : "bl" });		
+createPox(world,0,0,.01,810,{ 'userdata' : "lft_wall" });	
+createPox(world,539.09,0,.01,710,{ 'userdata' : "rgt_wall" });	
+createPox(world,509.09,120,.01,330,{ 'userdata' : "shoot_wall" });	
+createPox(world,0,0,540,.01,{ 'userdata' : "top_wall" });	
 
-createShape(world,410,0,[0,0,320,50,320,0,],{ 'userdata' : "upper_right_triangle" });		
+createShape(world,0,0,[0,0,0,120,120,0,],{ 'userdata' : "upper_left_triangle" });		
+createShape(world,450,0,[0,0,90,90,90,0,],{ 'userdata' : "upper_right_triangle" });		
+createShape(world,0,180,[0,0,0,180,60,120,60,60],{ 'userdata' : "left_banker" });		
+createShape(world,510,120,[0,0,-90,150,-90,210,0,210,],{ 'userdata' : "right_banker" });		
+
+createShape(world,60,450,[0,0,0,120,120,180],{ 'userdata' : "low_left_tri" });		
+createShape(world,355,630,[0,0,120,-60,120,-180],{ 'userdata' : "low_left_tri" });		
+createShape(world,30,600,[0,0,0,180,75,105,75,45],{ 'userdata' : "bot_left" });		
+createShape(world,30,705,[0,0,0,75,210,75,75,0],{ 'userdata' : "bot_leftb" });		
+
+createShape(world,510,600,[0,0,-75,45,-75,105,0,180],{ 'userdata' : "bot_right" });		
+createShape(world,300,780,[0,0,210,0,210,-75,135,-75],{ 'userdata' : "bot_rightb" });		
+
+// flip_left = createShape(world,240,540,[0,0,30,150,60,0],{ 'userdata' : "flipleft" });		
+// flip_base = createShape(world,240,510,[0,0,0,60,60,60,60,0],{ 'userdata' : "flipleft" });		
 
 
-createShape(world,0,0,[0,0,0,50,410,0,],{ 'userdata' : "upper_right_triangle" });	
-createShape(world,0,0,[0,0,0,700,50,700,],{ 'userdata' : "side_left_triangle" });	
+createShape(world,70,200,[0,0,0,180,75,105,75,45],{ 'userdata' : "bot_left",'type' : b2Body.b2_dynamicBody });		
+
+//flipcirc(world, 270,405, 35);
+createCircle(world, 270/scale,405/scale, 35/scale,{'type' : b2Body.b2_staticBody});
+
+
+
+
+//flipcirc(world, 240/scale, game.screen_height-(510/scale),2 ,{ 'density' : 2.0 });
+
+//  //box1
+//         var box1Def = new b2BodyDef;
+//         box1Def.type = b2Body.b2_staticBody;
+//         box1Def.position.Set(1,5);
+//         var fixDef2 = new b2FixtureDef;
+//         fixDef2.density = 10.0;
+//         fixDef2.friction = 0.5;
+//         fixDef2.restitution = .5;
+//         fixDef2.shape = new b2PolygonShape;
+//         fixDef2.shape.SetAsBox(.3,.3);
+//         var box1 = world.CreateBody(box1Def);
+//         box1.CreateFixture(fixDef2);
+// 
+//         //box2
+//         var box2Def = new b2BodyDef;
+//         box2Def.type = b2Body.b2_dynamicBody;
+//         box2Def.position.Set(2,6);
+//         var fixDef3 = new b2FixtureDef;
+//         fixDef3.density = 10.0;
+//         fixDef3.friction = 0.5;
+//         fixDef3.restitution = .2;
+//         fixDef3.shape = new b2PolygonShape;
+//         fixDef3.shape.SetAsBox(.3,.8);
+//         var box2 = world.CreateBody(box2Def);
+//         box2.CreateFixture(fixDef3);
+// 
+//         //Revolute joint
+//   var jointDef = new b2RevoluteJointDef();
+// jointDef.Initialize(box1, box2, box1.GetWorldCenter());
+//         world.CreateJoint(jointDef);
+
+
+//http://www.gaanza.com/blog/pinball-flipper-with-box2d/
+
+
+
 	return world;
 }	
 

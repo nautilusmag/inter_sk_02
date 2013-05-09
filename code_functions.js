@@ -80,6 +80,7 @@ fix_def.shape.SetAsArray(tt);
 	body_def.position.Set(nx , ny);
 	body_def.linearDamping = options.linearDamping;
 	body_def.userData = options.userdata;
+		body_def.type = options.type;
 	body_def.angularDamping = options.angularDamping;
 	var b = world.CreateBody( body_def );
 	var f = b.CreateFixture(fix_def);
@@ -119,7 +120,7 @@ function createBox(world, x, y, width, height, options)
 function createCircle(world, x, y, radius, options) 
 {
 	options = $.extend(true, {
-		'density' : 5.0 ,
+		'density' : 1.0 ,
 		'friction' : 0.0 ,
 		'restitution' : 0.2 ,
 		'linearDamping' : 0.0 ,
@@ -143,6 +144,47 @@ function createCircle(world, x, y, radius, options)
 	return b;
 }
 
+
+
+function flipcirc(world, x, y, radius, options) 
+{
+	options = $.extend(true, {
+		'density' : 1.0 ,
+		'friction' : 0.0 ,
+		'restitution' : 0.2 ,
+		'linearDamping' : 0.0 ,
+		'angularDamping' : 0.0 ,
+		'gravityScale' : 1.0 ,
+		'type' : b2Body.b2_staticBody
+	}, options);
+	
+	var body_def = new b2BodyDef();
+	var fix_def = new b2FixtureDef;
+	fix_def.density = options.density;
+	fix_def.friction = options.friction;
+	fix_def.restitution = options.restitution;
+	fix_def.shape = new b2CircleShape(radius/scale);
+
+	nx=x/scale;
+	ny=y/scale;
+	ny = game.screen_height-ny;
+
+console.log(scale);
+
+	body_def.position.Set(nx,ny);
+
+	body_def.linearDamping = options.linearDamping;
+	body_def.angularDamping = options.angularDamping;
+	body_def.type = options.type;
+	var b = world.CreateBody( body_def );
+	var f = b.CreateFixture(fix_def);
+	return b;
+}
+
+
+
+
+
 function game_loop() 
 {
 	var fps = 60;
@@ -155,8 +197,8 @@ function game_loop()
 }
 
 function create_circ(x,y,dd){
-console.log(dd);
-circ.body = createCircle(world, x/scale, game.screen_height-(y/scale),rd ,{ 'density' : 5.0 });
+//console.log(dd);
+circ.body = createCircle(world, x/scale, game.screen_height-(y/scale),rd ,{ 'density' : 2.0 });
 
 impulse = new b2Vec2(pwr*Math.cos(dd*Math.PI/180),pwr*Math.sin(dd*Math.PI/180));
 
